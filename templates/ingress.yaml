@@ -1,0 +1,27 @@
+{{- range .Values.redirects }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-redirect-%s" $.Release.Name .name }}
+  annotations:
+    cert-manager.io/cluster-issuer: "{{ .issuer }}"
+    traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ printf "%s-redirect-%s@kubernetescrd" $.Release.Name .name }}
+spec:
+  ingressClassName: {{ $.Values.ingressClassName }}
+  tls:
+    - hosts:
+        - {{ .host }}
+      secretName: {{ default (printf "%s-tls" (replace .host "." "-")) .tlsSecretName }}
+  rules:
+    - host: "{{ .host }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  {{ printf "%s-redirect-%s" $.Release.Name .name }}
+                port:
+                  number: {{ .port }}
+{{- end }}

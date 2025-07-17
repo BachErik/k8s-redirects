@@ -1,0 +1,26 @@
+{{- range .Values.redirects }}
+{{- $base := printf "%s-redirect-%s" $.Release.Name .name }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $base }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app: {{ printf "%s-pod" $base }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ printf "%s-pod" $base }}
+  template:
+    metadata:
+      labels:
+        app: {{ printf "%s-pod" $base }}
+    spec:
+      containers:
+        - name: {{ printf "%s-pod" $base }}
+          image: {{ .image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{ .port }}
+---
+{{- end }}

@@ -1,0 +1,17 @@
+#   - name: bluesky
+#     host: bluesky.lyre.works
+#     regex: "^https?://bluesky\\.lyre\\.works(?:/(.*))?"
+#     replacement: "https://bsky.app/profile/lyre.works/${1}"
+#     permanent: true
+#     image: traefik/whoami
+#     port: 80
+#     # optional: overide automatic generated secret name. For our example it would be bluesky-lyre-works-tls
+#     tlsSecretName: ""
+#     issuer: letsencrypt
+redirects: []
+
+# global defaults
+ingressClassName: traefik
+entryPoints:
+  - web
+  - websecure

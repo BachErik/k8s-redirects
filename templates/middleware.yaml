@@ -1,0 +1,13 @@
+{{- range .Values.redirects }}
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ printf "%s-redirect-%s" $.Release.Name .name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  redirectRegex:
+    regex: "{{ .regex }}"
+    replacement: "{{ .replacement }}"
+    permanent: {{ .permanent }}
+---
+{{- end }}
