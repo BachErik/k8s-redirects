@@ -6,8 +6,8 @@ metadata:
   namespace: {{ $.Release.Namespace }}
 spec:
   redirectRegex:
-    regex: "{{ .regex }}"
-    replacement: "{{ .replacement }}"
+    regex: '{{ .regex }}'
+    replacement: '{{ .replacement }}'
     permanent: {{ .permanent }}
 ---
 {{- end }}
