@@ -24,4 +24,5 @@ spec:
                 name:  {{ printf "%s-redirect-%s" $.Release.Name .name }}
                 port:
                   number: {{ .port }}
+---
 {{- end }}
