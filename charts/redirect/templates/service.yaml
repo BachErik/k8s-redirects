@@ -1,5 +1,5 @@
 {{- range .Values.redirects }}
-{{- $base := printf "%s-redirect-%s" $.Release.Name .name }}
+{{- $base := printf "%s" (replace .host "." "-") }}
 apiVersion: v1
 kind: Service
 metadata:

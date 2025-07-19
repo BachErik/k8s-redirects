@@ -1,10 +1,10 @@
 {{- range .Values.redirects }}
-{{- $base := printf "%s-redirect-%s" $.Release.Name .name }}
+{{- $base := printf "%s" (replace .host "." "-") }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $base }}
-  namespace: {{ $.Release.Namespace }}
+  namespace: {{ $.Values.Namespace }}
   labels:
     app: {{ printf "%s-pod" $base }}
 spec:

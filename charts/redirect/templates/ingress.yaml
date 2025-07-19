@@ -1,5 +1,5 @@
 {{- range .Values.redirects }}
-{{- $base := printf "%s-redirect-%s" $.Release.Name .name }}
+{{- $base := printf "%s" (replace .host "." "-") }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -8,13 +8,13 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: '{{ .issuer }}'
     traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
-    traefik.ingress.kubernetes.io/router.middlewares: {{ printf "%s-redirect-%s" $.Release.Name .name }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ $base }}
 spec:
   ingressClassName: {{ $.Values.ingressClassName }}
   tls:
     - hosts:
         - {{ .host }}
-      secretName: {{ default (printf "%s-redirect-%s-tls" $.Release.Name .name) .tlsSecretName }}
+      secretName: {{ default (printf "%s-tls" $.Values.host) .tlsSecretName }}
   rules:
     - host: '{{ .host }}'
       http:
