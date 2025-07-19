@@ -12,7 +12,7 @@ spec:
   tls:
     - hosts:
         - {{ .host }}
-      secretName: {{ default (printf "%s-tls" (replace .host "." "-")) .tlsSecretName }}
+      secretName: {{ default (printf "%s-redirect-%s-tls" $.Release.Name .name) .tlsSecretName }}
   rules:
     - host: '{{ .host }}'
       http:
