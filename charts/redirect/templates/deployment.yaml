@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $base }}
+  name: "{{ $base }}"
   labels:
     app: {{ printf "%s-pod" $base }}
 spec:
