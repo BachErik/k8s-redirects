@@ -1,13 +1,12 @@
 {{- range .Values.redirects }}
-{{- $base := printf "%s" (replace .host "." "-") }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: "{{ $base }}"
+  name: "{{ .host }}"
   annotations:
     cert-manager.io/cluster-issuer: '{{ .issuer }}'
     traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
-    traefik.ingress.kubernetes.io/router.middlewares: "{{ $base }}"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .host }}"
 spec:
   ingressClassName: {{ $.Values.ingressClassName }}
   tls:
@@ -22,7 +21,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name:  "{{ $base }}"
+                name:  "{{ .host }}"
                 port:
                   number: {{ .port }}
 ---

@@ -1,12 +1,11 @@
 {{- range .Values.redirects }}
-{{- $base := printf "%s" (replace .host "." "-") }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ $base }}"
+  name: "{{ .host }}"
 spec:
   selector:
-    app: {{ printf "%s-pod" $base }}
+    app: {{ printf "%s-pod" .host }}
   type: ClusterIP
   ports:
     - name: http

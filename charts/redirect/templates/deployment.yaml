@@ -1,22 +1,21 @@
 {{- range .Values.redirects }}
-{{- $base := printf "%s" (replace .host "." "-") }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ $base }}"
+  name: "{{ .host }}"
   labels:
-    app: {{ printf "%s-pod" $base }}
+    app: {{ printf "%s-pod" .host }}
 spec:
   selector:
     matchLabels:
-      app: {{ printf "%s-pod" $base }}
+      app: {{ printf "%s-pod" .host }}
   template:
     metadata:
       labels:
-        app: {{ printf "%s-pod" $base }}
+        app: {{ printf "%s-pod" .host }}
     spec:
       containers:
-        - name: {{ printf "%s-pod" $base }}
+        - name: {{ printf "%s-pod" .host }}
           image: {{ .image }}
           imagePullPolicy: IfNotPresent
           ports:
