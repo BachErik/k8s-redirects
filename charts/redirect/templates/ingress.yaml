@@ -7,7 +7,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: '{{ .issuer }}'
     traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
-    traefik.ingress.kubernetes.io/router.middlewares: {{ $base }}
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ $base }}"
 spec:
   ingressClassName: {{ $.Values.ingressClassName }}
   tls:
