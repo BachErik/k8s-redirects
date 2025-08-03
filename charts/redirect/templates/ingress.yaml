@@ -1,6 +1,6 @@
 
-{{- $fallback := printf "%s-tls" ( .host | replace "." "-" ) -}}
-{{- $secret  := default $fallback .tlsSecretName -}}
+{{- $fallback := printf "%s-tls" ( .host | replace "." "-" ) }}
+{{- $secret  := default $fallback .tlsSecretName }}
 {{- range .Values.redirects }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
