@@ -10,9 +10,9 @@ metadata:
 spec:
   ingressClassName: {{ $.Values.ingressClassName }}
   tls:
-    - hosts:
+    - secretName: {{ default (printf "%s-tls" ((.host | quote ) | replace " " "-")) .tlsSecretName }}
+      hosts:
         - {{ .host }}
-      secretName: {{ default (printf "%s-tls" ((.host | quote ) | replace " " "-")) .tlsSecretName }}
   rules:
     - host: '{{ .host }}'
       http:
