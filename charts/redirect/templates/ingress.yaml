@@ -8,7 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
     traefik.ingress.kubernetes.io/router.middlewares: "{{ .host }}"
 spec:
-  ingressClassName: {{ .Values.ingressClassName }}
+  ingressClassName: {{ $.Values.ingressClassName | quote }}
   tls:
     - secretName: {{ default (printf "%s-tls" ((.host | quote ) | replace " " "-")) .tlsSecretName }}
       hosts:
