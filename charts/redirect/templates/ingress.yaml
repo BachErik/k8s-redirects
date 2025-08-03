@@ -12,7 +12,7 @@ spec:
   tls:
     - hosts:
         - {{ .host }}
-      secretName: "{{ default (printf "%s-tls" ($.Values.host | replace "." "-")) .tlsSecretName }}"
+      secretName: "{{ .tlsSecretName default(printf "%s-tls" ($.Values.host | replace "." "-")) | quote }}"
   rules:
     - host: '{{ .host }}'
       http:
