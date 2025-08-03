@@ -6,22 +6,22 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: '{{ .issuer }}'
     traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
-    traefik.ingress.kubernetes.io/router.middlewares: "{{ .host | replace "." "-" }}"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .host }}"
 spec:
   ingressClassName: {{ $.Values.ingressClassName }}
   tls:
     - hosts:
         - {{ .host }}
-      secretName: "{{ default (printf "%s-tls" $.Values.host | replace "." "-") .tlsSecretName }}"
+      secretName: "{{ default ((printf "%s-tls" $.Values.host) | replace "." "-") .tlsSecretName }}"
   rules:
-    - host: '{{ .host | replace "." "-" }}'
+    - host: '{{ .host }}'
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name:  "{{ .host | replace "." "-" }}"
+                name:  "{{ .host }}"
                 port:
                   number: {{ .port }}
 ---
