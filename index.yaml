@@ -2,6 +2,17 @@ apiVersion: v1
 entries:
   k8s-redirects:
   - apiVersion: v2
+    appVersion: 0.2.23
+    created: "2025-08-03T15:07:52.177592526Z"
+    description: Uses external-dns and traefik to redirect certain domains to other
+      websites/URL/URI
+    digest: 0762d04d39021ccca1e37d771f2f1e9aac1a583dfc0d31bf42da987cb9899674
+    name: k8s-redirects
+    type: application
+    urls:
+    - https://github.com/BachErik/k8s-redirects/releases/download/k8s-redirects-0.2.23/k8s-redirects-0.2.23.tgz
+    version: 0.2.23
+  - apiVersion: v2
     appVersion: 0.2.22
     created: "2025-08-03T15:01:37.785460065Z"
     description: Uses external-dns and traefik to redirect certain domains to other
@@ -199,4 +210,4 @@ entries:
     urls:
     - https://github.com/BachErik/k8s-redirects/releases/download/k8s-redirects-0.2.5/k8s-redirects-0.2.5.tgz
     version: 0.2.5
-generated: "2025-08-03T15:01:37.785587955Z"
+generated: "2025-08-03T15:07:52.177727908Z"
