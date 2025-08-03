@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .host }}"
+  name: "{{ .host | replace "." "-" }}"
   labels:
-    app: {{ printf "%s-pod" .host }}
+    app: {{ printf "%s-pod" .host | replace "." "-" }}
 spec:
   selector:
     matchLabels:
-      app: {{ printf "%s-pod" .host }}
+      app: {{ printf "%s-pod" .host | replace "." "-" }}
   template:
     metadata:
       labels:
-        app: {{ printf "%s-pod" .host }}
+        app: {{ printf "%s-pod" .host | replace "." "-" }}
     spec:
       containers:
-        - name: {{ printf "%s-pod" .host }}
+        - name: {{ printf "%s-pod" .host | replace "." "-" }}
           image: {{ .image }}
           imagePullPolicy: IfNotPresent
           ports:

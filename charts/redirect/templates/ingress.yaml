@@ -2,26 +2,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: "{{ .host }}"
+  name: "{{ .host | replace "." "-" }}"
   annotations:
     cert-manager.io/cluster-issuer: '{{ .issuer }}'
     traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
-    traefik.ingress.kubernetes.io/router.middlewares: "{{ .host }}"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .host | replace "." "-" }}"
 spec:
   ingressClassName: {{ $.Values.ingressClassName }}
   tls:
     - hosts:
         - {{ .host }}
-      secretName: "{{ default (printf "%s-tls" $.Values.host) .tlsSecretName }}"
+      secretName: "{{ default (printf "%s-tls" $.Values.host | replace "." "-") .tlsSecretName }}"
   rules:
-    - host: '{{ .host }}'
+    - host: '{{ .host | replace "." "-" }}'
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name:  "{{ .host }}"
+                name:  "{{ .host | replace "." "-" }}"
                 port:
                   number: {{ .port }}
 ---
