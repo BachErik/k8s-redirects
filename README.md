@@ -1,4 +1,4 @@
 # k8s-redirects
 
 > [!IMPORTANT]  
-> This helm chart was entirely programmed by ai.
+> This helm chart was mostly programmed by ai.
