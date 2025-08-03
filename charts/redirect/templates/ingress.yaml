@@ -1,6 +1,3 @@
-
-{{- $fallback := printf "%s-tls" ( .host | replace "." "-" ) }}
-{{- $secret  := default $fallback .tlsSecretName }}
 {{- range .Values.redirects }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -15,7 +12,7 @@ spec:
   tls:
     - hosts:
         - {{ .host }}
-      secretName: {{ $secret | quote }}
+      secretName: {{ default (printf "%s-tls" ((.host | quote ) | replace " " "-")) .tlsSecretName }}
   rules:
     - host: '{{ .host }}'
       http:
