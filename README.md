@@ -1,4 +1,4 @@
-# k8s-redirects
+# k8s-redirects [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/k8s-redirects)](https://artifacthub.io/packages/search?repo=k8s-redirects)
 
 > [!IMPORTANT]  
 > This helm chart was mostly programmed by ai.
