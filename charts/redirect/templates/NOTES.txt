@@ -1,0 +1,13 @@
+Thank you for installing k8s-redirects {{ .Chart.Version }}.
+
+Redirects created:
+{{- range .Values.redirects }}
+  - https://{{ .host }}  →  {{ .replacement }} (via RedirectRegex)
+{{- end }}
+
+Verify:
+  kubectl get ingress -n {{ .Release.Namespace }}
+  kubectl describe ingress -n {{ .Release.Namespace }} {{ (index .Values.redirects 0).host | replace "." "-" }}
+
+If using cert-manager, ensure the Issuer/ClusterIssuer "{{ (index .Values.redirects 0).issuer }}" exists.
+If using external-dns, ensure its source includes Ingress resources.
