@@ -1,17 +1,62 @@
-#   - name: bluesky
-#     host: bluesky.lyre.works
-#     regex: "^https?://bluesky\\.lyre\\.works(?:/(.*))?"
-#     replacement: "https://bsky.app/profile/lyre.works/${1}"
-#     permanent: true
-#     image: traefik/whoami
-#     port: 80
-#     # optional: overide automatic generated secret name. For our example it would be bluesky-lyre-works-tls
-#     tlsSecretName: ""
-#     issuer: letsencrypt
-redirects: []
+# This chart creates, for each redirect item:
+#  - a Traefik Middleware (RedirectRegex)
+#  - an Ingress attaching that middleware
+#  - a tiny Service/Deployment backend (the redirect triggers before the backend responds)
+#
+# IMPORTANT
+# - One host per redirect item (standard Kubernetes Ingress rule).
+# - Regex is used by Traefik’s RedirectRegex middleware to transform the *requested URL*.
+# - Escape dots in hostnames inside regex: "example\.com"
+# - Use ${1}, ${2}, ... in `replacement` to forward captured groups (path, query, etc.).
+#
+# OPTIONAL CONVENIENCE: YAML defaults via anchor (no template changes required)
+serviceDefaults: &serviceDefaults
+  image: traefik/whoami   # tiny container, never reached when redirect fires
+  port: 80
 
-# global defaults
+# ────────────────────────────────────────────────────────────────────────────────
+# Redirect definitions
+# Provide one item per host you want to redirect.
+# REQUIRED FIELDS per item: host, regex, replacement, permanent, image, port
+redirects:
+  # EXAMPLE 1 — preserve path:
+  #   https://old.example.com/foo → https://new.example.com/foo
+  - <<: *serviceDefaults
+    name: example-preserve-path
+    host: old.example.com
+    regex: "^https?://old\\.example\\.com(?:/(.*))?$"
+    replacement: "https://new.example.com/${1}"
+    permanent: true
+    # tlsSecretName: ""        # optional: override auto "<host>-tls"
+    # issuer: letsencrypt      # optional: cert-manager (Cluster)Issuer name
+
+  # EXAMPLE 2 — redirect a subpath to a different target (drop path):
+  #   https://blog.example.com/* → https://medium.com/@example
+  #   (ignores the incoming path)
+  # - <<: *serviceDefaults
+  #   name: blog-to-medium
+  #   host: blog.example.com
+  #   regex: "^https?://blog\\.example\\.com(?:/.*)?$"
+  #   replacement: "https://medium.com/@example"
+  #   permanent: true
+
+  # EXAMPLE 3 — forward path & query string:
+  #   https://x.example.com/foo?bar=baz → https://y.example.org/foo?bar=baz
+  #   NOTE: Traefik’s RedirectRegex operates on the full URL; (.*) captures the rest.
+  # - <<: *serviceDefaults
+  #   name: path-and-query
+  #   host: x.example.com
+  #   regex: "^https?://x\\.example\\.com/(.*)$"
+  #   replacement: "https://y.example.org/${1}"
+  #   permanent: true
+
+# ────────────────────────────────────────────────────────────────────────────────
+# Global defaults
+# Ingress class used by your Traefik installation.
 ingressClassName: traefik
+
+# Traefik entrypoints to use (comma-joined in the Ingress annotation).
+# Typically ["web", "websecure"]; if you only terminate TLS, keep "websecure".
 entryPoints:
   - web
   - websecure

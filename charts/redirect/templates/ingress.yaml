@@ -4,7 +4,9 @@ kind: Ingress
 metadata:
   name: "{{ .host | replace "." "-" }}"
   annotations:
-    cert-manager.io/cluster-issuer: '{{ .issuer }}'
+    {{- if .issuer }}
+    cert-manager.io/cluster-issuer: "{{ .issuer }}"
+    {{- end }}
     traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
     traefik.ingress.kubernetes.io/router.middlewares: "{{ $.Release.Namespace }}-{{ .host | replace "." "-" }}@kubernetescrd"
 spec:
@@ -16,14 +18,14 @@ spec:
       hosts:
         - {{ .host }}
   rules:
-    - host: '{{ .host }}'
+    - host: "{{ .host }}"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name:  "{{ .host | replace "." "-" }}"
+                name: "{{ .host | replace "." "-" }}"
                 port:
                   number: {{ .port }}
 ---
