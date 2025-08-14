@@ -6,7 +6,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: '{{ .issuer }}'
     traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
-    traefik.ingress.kubernetes.io/router.middlewares: "{{ .host | replace "." "-" }}"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ $.Release.Namespace }}-{{ .host | replace "." "-" }}@kubernetescrd"
 spec:
   {{- with $.Values.ingressClassName }}
   ingressClassName: {{ . | quote }}
