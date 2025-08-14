@@ -1,0 +1,7 @@
+# Artifact Hub repository metadata file
+#
+
+repositoryID: k8s-redirects
+owners:
+  - name: BachErik
+    email: bacherik.info@gmail.com
