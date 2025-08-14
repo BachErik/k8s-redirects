@@ -6,13 +6,13 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: '{{ .issuer }}'
     traefik.ingress.kubernetes.io/router.entrypoints: {{ join "," $.Values.entryPoints }}
-    traefik.ingress.kubernetes.io/router.middlewares: "{{ .host }}"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .host | replace "." "-" }}"
 spec:
-  {{- with .Values.ingressClassName }}
+  {{- with $.Values.ingressClassName }}
   ingressClassName: {{ . | quote }}
   {{- end }}
   tls:
-    - secretName: {{ default (printf "%s-tls" ((.host | quote ) | replace " " "-")) .tlsSecretName }}
+    - secretName: {{ (default (printf "%s-tls" (.host | replace "." "-")) .tlsSecretName) | quote }}
       hosts:
         - {{ .host }}
   rules:
